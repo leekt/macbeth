@@ -1,6 +1,11 @@
 [default]
-src = 'src'
-out = 'out'
-libs = ['lib']
+libs = ['lib','node_modules']
+solc_version = '0.8.14'
+evm_version = 'london'
+optimizer = true
+optimizer_runs = 10000
 
+gas_reports = ["*"]
+
+verbosity = 4
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
