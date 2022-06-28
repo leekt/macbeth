@@ -100,6 +100,8 @@ contract FuzzWeirdERC20 is Test {
             return address(tft);
         } else if ( tokenType == 12 ) {
             return address(tfst);
+        } else {
+            revert("not supported yet");
         }
     }
 
@@ -142,7 +144,7 @@ contract FuzzWeirdERC20 is Test {
         return f[0](holder, usedBy, amount);
     }
 
-    function getScenarios(uint256 tokenType) internal returns(
+    function getScenarios(uint256 tokenType) internal pure returns(
         function(address,address,uint256) returns(address)[] memory f
     ){
         if(tokenType == 0) {

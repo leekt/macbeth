@@ -27,4 +27,19 @@ contract TestFuzzWeirdERC20 is FuzzWeirdERC20 {
         uint256 depositAfter = vault.deposits(holder);
         assertEq(ERC20(token).balanceOf(spender), vaultBalanceBefore + depositAfter - depositBefore);
     }
+
+    function testFailDepositExceedsAllowance(uint256 tokenType, uint256 amount) external {
+        tokenType = getTokenType(tokenType);
+        (uint256 min, ) = tokenInputRange(tokenType);
+        amount = bound(amount, min, tokenSupply);
+        address holder = address(0xBEEF);
+        address spender = address(vault);
+        address token = runHappyScenario(tokenType, holder, spender, amount);
+        uint256 vaultBalanceBefore = ERC20(token).balanceOf(spender);
+        uint256 depositBefore = vault.deposits(holder);
+        vm.prank(holder);
+        vault.deposit(token, amount + 1);
+        uint256 depositAfter = vault.deposits(holder);
+        assertEq(ERC20(token).balanceOf(spender), vaultBalanceBefore + depositAfter - depositBefore);
+    }
 }
